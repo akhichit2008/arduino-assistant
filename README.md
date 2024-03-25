@@ -1,0 +1,2 @@
+# arduino-assistant
+CODE FOR THE ARDUINO AI ASSISTANT
