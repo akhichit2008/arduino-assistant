@@ -35,3 +35,8 @@ def getWeather():
 def analyseReport():
     response = model.generate_content(f"Summarise the weather in a paragraph by analysing the given json weather report : {getWeather()}")
     return response.text
+
+
+def generalResponse(query):
+    response = model.generate_content(query)
+    return response.text
