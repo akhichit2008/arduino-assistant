@@ -2,6 +2,7 @@ import speech_recognition as sr
 from gtts import gTTS
 import playsound
 import requests
+import os
 
 url = "https://fantastic-couscous-49wgvjq9645hjg44-5000.app.github.dev/"
 
@@ -27,6 +28,7 @@ def play_res(text):
     tts = gTTS(text=text,lang="en")
     tts.save("temp.mp3")
     playsound.playsound("temp.mp3")
+    os.remove("temp.mp3")
 
 def recognize(audio):
     try:
@@ -38,14 +40,13 @@ def recognize(audio):
     except sr.RequestError:
         print("Service Inaccessible")
 
-        
-if __name__ == "__main__":
-    #audio = rec_audio()
-    #recognize(audio)
+def get_user_query():
+    print("Microphone Button Clicked!")
     try:
-        audio = rec_audio()
-        text = recognize(audio)
+        query = rec_audio()
+        text = recognize(query)
         res = req_query(text)
         play_res(res)
-    except requests.ConnectionError:
-        print("Network connection Error")
+    except ConnectionError:
+        message_box = customtkinter.CTkMessageBox(self, title="No Internet Connection", message="Please Check Your Internet Connection")
+        message_box.show()
