@@ -28,12 +28,11 @@ def getWeather():
     else:
         print("Error in fetching weather data!!!!",file=sys.stderr)
         sys.stderr.write("Error in fetching weather data!!!!")
-        exit()
 
 
 
 def analyseReport():
-    response = model.generate_content(f"Summarise the weather in a paragraph by analysing the given json weather report : {getWeather()}")
+    response = model.generate_content(f"Summarise the weather in a single sentence from the given json weather report without including too much scientific data (include only what is required for a common person) : {getWeather()}")
     return response.text
 
 
