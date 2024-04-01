@@ -1,13 +1,14 @@
 import customtkinter
 from customtkinter import CTk
 from PIL import Image, ImageTk
-from arduino_assistant import get_user_query
+from client_services import get_user_query
 import threading
 from customtkinter import CTk, CTkButton, CTkFrame
 from PIL import Image, ImageTk
+import subprocess
 
 customtkinter.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
-customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
+customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
 
 #CTk._set_appearance_mode("Dark")  # Or "Dark"
@@ -16,9 +17,6 @@ def clickbutton():
     net_thread = threading.Thread(target=get_user_query)
     net_thread.start()
     net_thread.join()
-
-
-
 
 class AssistantUIDesktop(CTk):
     def __init__(self):

@@ -1,6 +1,6 @@
 import json
 import os
-from arduino_assistant import rec_audio, recognize, play_res
+from client_services import rec_audio, recognize, play_res
 
 play_res("You are in the installation setup of arduino assistant. Firstly What is your name ?")
 name_audio = rec_audio()

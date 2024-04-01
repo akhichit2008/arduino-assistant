@@ -2,6 +2,9 @@ import google.generativeai as genai
 import requests
 import sys
 import json
+from newsapi import NewsApiClient
+import pycountry
+import json
 
 with open("secrets.json","r") as s:
     keys = json.load(s)
@@ -39,3 +42,48 @@ def analyseReport():
 def generalResponse(query):
     response = model.generate_content(query)
     return response.text
+
+
+'''
+News By Categories (List of Topics):
+
+1.Business
+2.Entertainment
+3.General
+4.Health
+5.Science
+6.Technology
+'''
+
+
+news_api_key = keys["NEWS_API_KEY"]
+
+newsapi = NewsApiClient(api_key=news_api_key)
+
+
+input_country = "India"
+input_countries = [f'{input_country.strip()}']
+countries = {}
+
+for country in pycountry.countries:
+	countries[country.name] = country.alpha_2
+
+codes = [countries.get(country.title(), 'Unknown code')
+		for country in input_countries]
+
+def get_headlines(option):
+	data = []
+	top_headlines = newsapi.get_top_headlines(
+
+	category=f'{option.lower()}', language='en', country=f'{codes[0].lower()}')
+	Headlines = top_headlines['articles']
+	if Headlines:
+		for articles in Headlines:
+			b = articles['title'][::-1].index("-")
+			if "news" in (articles['title'][-b+1:]).lower():
+				data.append(f"{articles['title'][-b+1:]}: {articles['title'][:-b-2]}.")
+			else:
+				data.append(f"{articles['title'][-b+1:]} News: {articles['title'][:-b-2]}.")
+	else:
+		return False
+	return data

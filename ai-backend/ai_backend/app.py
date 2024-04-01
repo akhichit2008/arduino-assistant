@@ -24,10 +24,16 @@ class MakeLLMReq(Resource):
             elif data['action'] == "general":
               res = generalResponse(data['query'])
               return res
+            elif data['action'] == "newsHeadlines":
+               if data['category']:
+                  res = get_headlines(data['category'])
+                  return res
+               else:
+                  return {"Error":"Please provide a news headlines category"}
             else:
              return data
 
 api.add_resource(MakeLLMReq,'/')
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
