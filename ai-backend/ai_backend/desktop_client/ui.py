@@ -1,53 +1,67 @@
-import tkinter as tk
+import customtkinter
+from customtkinter import CTk
 from PIL import Image, ImageTk
 from arduino_assistant import get_user_query
 import threading
+from customtkinter import CTk, CTkButton, CTkFrame
+from PIL import Image, ImageTk
 
+customtkinter.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
+customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
+
+
+#CTk._set_appearance_mode("Dark")  # Or "Dark"
 
 def clickbutton():
     net_thread = threading.Thread(target=get_user_query)
     net_thread.start()
     net_thread.join()
 
-    
-class AssistantUIDesktop(tk.Frame):
-  def __init__(self, master):
-    super().__init__(master)
 
-    # Create a canvas to draw on (optional)
-    self.canvas = tk.Canvas(self, width=200, height=100)
-    self.canvas.pack()
-    #customtkinter.set_appearance_mode("Dark")
-    mic_image = Image.open("microphone.jpg")  # Replace with your microphone image path
-    mic_image = mic_image.resize((30, 30), Image.Resampling.LANCZOS)  # Use Resampling.LANCZOS
-    self.mic_icon = ImageTk.PhotoImage(mic_image)
 
-    # Create a button with microphone icon
-    self.button = tk.Button(self.master, image=self.mic_icon, command=clickbutton)
-    self.button.pack()
 
-    # Configure window appearance (optional)
-    self.configure(background="gray80")  # Set background color (optional)
+class AssistantUIDesktop(CTk):
+    def __init__(self):
+        super().__init__()
+        # Create a CTkFrame (optional)
+        self.frame = CTkFrame(self)
+        self.frame.pack(padx=10, pady=10)
 
-    # Remove maximize and minimize buttons
-    self.master.attributes('-toolwindow', True)  # Alternative approach
+        # Load microphone image
+        mic_image = Image.open("microphone.jpg")  # Replace with your image path
+        mic_image = mic_image.resize((30, 30), Image.Resampling.LANCZOS)
+        self.mic_icon = ImageTk.PhotoImage(mic_image)
 
-    # Keep the title bar with only close button
-    self.master.title("Fancy UI")  # Set window title (optional)
+        # Create microphone button with CTkButton
+        self.button = CTkButton(self.frame, image=self.mic_icon, command=clickbutton)
+        self.button.pack()
 
-    # Position the UI in the desired location
-    self.master.geometry("200x100+"+str(self.master.winfo_screenwidth() - 300)+"+50")
+         # Or "Dark" for dark mode
+
+        # Set window title (optional)
+        self.title("Fancy UI")
+
+        # Position the window
+        screen_width = self.winfo_screenwidth()
+        self.geometry(f"200x100+{screen_width - 300}+50")
+
+        # Set foreground color options (choose one or combine)
+        # Option 1: Set foreground color for the entire window
+        self.configure(fg="black")  # Replace with desired color
+
+        # Option 2: Set foreground color for specific widgets
+        # self.button.configure(fg="white")  # Set foreground color of the button
+
 
 
 def init_ui():
-  root = tk.Tk()
-  ui = AssistantUIDesktop(root)
-  ui.mainloop()
-  ui_thread.stop()
-  net_thread.stop()
+    ui = AssistantUIDesktop()
+    ui.mainloop()
 
-ui_thread = threading.Thread(target=init_ui)
+
+
 
 if __name__ == "__main__":
+    ui_thread = threading.Thread(target=init_ui)
     ui_thread.start()
     ui_thread.join()
